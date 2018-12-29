@@ -4,6 +4,7 @@ import com.mock.annotation.MockMethod
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtMethod
+import org.apache.http.util.TextUtils
 import org.gradle.api.Project
 
 import java.lang.reflect.Modifier
@@ -12,7 +13,7 @@ class Inject {
     private static ClassPool pool = ClassPool.getDefault()
 
 
-    static void injectJarPath(String path){
+    static void injectJarPath(String path) {
         //注入依赖与generator中的类，所以注入jar path
         println("--------jar-path----:" + path)
         pool.appendClassPath(path)
@@ -39,7 +40,7 @@ class Inject {
                                 //
                                 int start = className.indexOf(pkg)
                                 String clzName = className.substring(start, className.length() - 6)
-                                println 'clzName:' + clzName
+//                                println 'clzName:' + clzName
                                 injectClass(path, clzName)
                             }
                         }
@@ -52,13 +53,17 @@ class Inject {
 
     private static void injectClass(String path, String className) {
         CtClass ctClass = pool.get(className)
-        CtMethod[] methods = ctClass.getMethods()
+        CtMethod[] methods = ctClass.getDeclaredMethods()
         if (methods == null || methods.length == 0) {
             return
         }
         methods.each { CtMethod method ->
             MockMethod mockMethod = method.getAnnotation(MockMethod.class)
             if (mockMethod == null) {
+                return
+            }
+            println "method return : " + method.returnType.name
+            if (!isAllow(method.returnType.name)) {
                 return
             }
             println("methodDes:" + getMethodDes(className, method.name, method.returnType.name))
@@ -68,6 +73,33 @@ class Inject {
         }
         ctClass.writeFile(path)
         ctClass.detach()
+    }
+    static List<String> dataType = [
+            String.class.name,
+            int.class.name,
+            long.class.name,
+            double.class.name,
+            float.class.name,
+            boolean.class.name,
+            short.class.name,
+            Integer.class.name,
+            Long.class.name,
+            Double.class.name,
+            Float.class.name,
+            Boolean.class.name,
+            Short.class.name,].collect()
+
+    static boolean isAllow(String returnType) {
+        if (returnType == null) {
+            return false
+        }
+
+
+
+        if (dataType.contains(returnType)) {
+            return true
+        }
+        return false
     }
 
     private static String getMethodDes(String className, String methodName, String returnType) {
@@ -106,10 +138,10 @@ class Inject {
             return 'Short.valueOf(value)'
         }
     }
-    /**
-     * 伪造一个类，骗过编译器
-     * @param path
-     */
+/**
+ * 伪造一个类，骗过编译器
+ * @param path
+ */
     private static void fakeMockManager(String path) {
         CtClass ctClass = pool.makeClass('com.mock.generator.MockManager')
         CtClass stringCtClass = pool.getCtClass("java.lang.String")
