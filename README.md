@@ -4,7 +4,7 @@
         * 四宫格和六宫格切换
         * vip和非vip的场景切换
 
-    <iframe src="screenshot/ic_screen_demo.gif" width="250" height="500" alt="avatar" />
+    ![demo](screenshot/ic_screen_demo.gif)
 
 * 安装
     * 将mock-method-plugin 上传到本地仓库
