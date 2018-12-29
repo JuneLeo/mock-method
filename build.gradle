@@ -1,0 +1,45 @@
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        // plugin
+        maven {
+            url uri('local-repos')
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.mock.internel:MockPlugin:1.0'
+        classpath 'com.gradle:build-scan-plugin:1.8'
+    }
+
+}
+apply plugin: 'com.gradle.build-scan'
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+}
+
+allprojects {
+    repositories {
+        // annotation
+        maven {
+            url uri('../local-repos')
+        }
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+
+    }
+}
+
+
+
+

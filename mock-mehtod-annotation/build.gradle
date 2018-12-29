@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+apply from:file('upload.gradle')
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"

@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri('../local-repos'))
+        pom.groupId = 'com.mock.internel' // 组名
+        pom.artifactId = 'MockAnnotation' // 插件名
+        pom.version = '1.0' // 版本号
+    }
+}

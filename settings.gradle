@@ -1,0 +1,1 @@
+include ':app', ':mock-method-plugin', ':mock-mehtod-annotation', ':mock-method-compiler', ':mock-method-generator'
