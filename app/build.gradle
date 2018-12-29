@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'MockPlugin'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -18,6 +17,7 @@ android {
 
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -28,14 +28,7 @@ dependencies {
     implementation project(':mock-method-generator')
     annotationProcessor project(':mock-method-compiler')
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.mock.internel:MockAnnotation:1.0'
 
 
-}
-//加快编译速度
-mock {
-    packages = [
-            'com.mock.sample'
-    ]
 }
 

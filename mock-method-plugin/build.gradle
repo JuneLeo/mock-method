@@ -10,7 +10,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.2.1'  //build tools
     implementation 'com.android.tools.build:transform-api:1.5.0' //transform
     implementation 'org.javassist:javassist:3.23.0-GA' //javassist
-    implementation 'com.mock.internel:MockAnnotation:1.0'
+//    implementation 'com.mock.internel:MockAnnotation:1.0'
 }
 
 sourceCompatibility = "7"

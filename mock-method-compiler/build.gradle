@@ -5,7 +5,7 @@ dependencies {
     implementation 'com.squareup:javapoet:1.11.1'
     implementation 'com.google.auto.service:auto-service:1.0-rc2'
     implementation 'org.javassist:javassist:3.23.0-GA' //javassist
-    implementation 'com.mock.internel:MockAnnotation:1.0'
+//    implementation 'com.mock.internel:MockAnnotation:1.0'
 }
 
 sourceCompatibility = "1.7"

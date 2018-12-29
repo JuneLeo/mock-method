@@ -1,5 +1,6 @@
-buildscript {
+import com.android.build.gradle.AppPlugin
 
+buildscript {
     repositories {
         google()
         jcenter()
@@ -8,7 +9,6 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-        // plugin
         maven {
             url uri('local-repos')
         }
@@ -18,16 +18,32 @@ buildscript {
         classpath 'com.mock.internel:MockPlugin:1.0'
         classpath 'com.gradle:build-scan-plugin:1.8'
     }
-
+    Project project = rootProject.project('app')
+    project.plugins.whenObjectAdded {
+        if (it.class.name.contains('AppPlugin')) {
+            project.apply plugin: 'MockPlugin'
+            project.mock {
+                //加快编译速度
+                packages = [
+                        'com.mock.sample'
+                ]
+            }
+        }
+    }
 }
+
+
+
 apply plugin: 'com.gradle.build-scan'
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
 }
 
-allprojects {
-    repositories {
+def annotationProject = ['mock-method-plugin', 'mock-method-compiler', 'app'].collect()
+
+allprojects { project ->
+    project.repositories {
         // annotation
         maven {
             url uri('../local-repos')
@@ -36,6 +52,15 @@ allprojects {
         jcenter()
         mavenCentral()
         mavenLocal()
+
+    }
+    //三个项目统一引入依赖，依赖必须在configurations设置了之后才可以使用
+    if (annotationProject.contains(project.name)) {
+        project.getConfigurations().whenObjectAdded {
+            if (it.name.equals('implementation')) {
+                it.dependencies.add(project.dependencies.create('com.mock.internel:MockAnnotation:1.0'))
+            }
+        }
 
     }
 }

@@ -2,9 +2,8 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-
-
 uploadArchives {
+
     repositories.mavenDeployer {
         repository(url: uri('../local-repos'))
         pom.groupId = 'com.mock.internel' // 组名

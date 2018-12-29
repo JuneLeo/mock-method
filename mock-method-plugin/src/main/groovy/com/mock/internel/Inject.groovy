@@ -4,7 +4,6 @@ import com.mock.annotation.MockMethod
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtMethod
-import org.apache.http.util.TextUtils
 import org.gradle.api.Project
 
 import java.lang.reflect.Modifier
