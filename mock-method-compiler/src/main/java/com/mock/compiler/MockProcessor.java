@@ -59,7 +59,7 @@ public class MockProcessor extends AbstractProcessor {
         try {
             TypeSpec type = injectMockMethodManager(elements);
             if (type != null) {
-                JavaFile.builder("com.leo.events.mock", type).build().writeTo(mFiler);
+                JavaFile.builder("com.mock.generator", type).build().writeTo(mFiler);
             }
         } catch (FilerException e) {
             e.printStackTrace();
