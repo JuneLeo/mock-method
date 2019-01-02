@@ -3,5 +3,5 @@ include ':mock-method-sample', ':mock-method-plugin', ':mock-method-android'
 include ':compiler'
 project(':compiler').projectDir = new File('mock-method-compiler/library')
 //注解
-//include ':annotation'
-//project(':annotation').projectDir = new File('mock-method-annotation/library')
+include ':annotation'
+project(':annotation').projectDir = new File('mock-method-annotation/library')
