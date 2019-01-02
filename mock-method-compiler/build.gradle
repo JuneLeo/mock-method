@@ -8,7 +8,7 @@ dependencies {
     implementation 'com.squareup:javapoet:1.11.1'
     implementation 'com.google.auto.service:auto-service:1.0-rc3'
     implementation 'org.javassist:javassist:3.23.0-GA' //javassist
-    implementation 'com.github.JuneLeo.mock-method:mock-method-annotation:1.0.0'
+    implementation 'com.github.JuneLeo.mock-method:mock-method-annotation:1.0.1'
 }
 
 sourceCompatibility = "1.7"

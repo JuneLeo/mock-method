@@ -20,10 +20,9 @@ class MockPlugin implements Plugin<Project> {
             url "https://jitpack.io"
         }
         project.configurations.implementation.dependencies.add(
-                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-annotation:1.0.0'))
-
+                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-annotation:1.0.1'))
         project.configurations.implementation.dependencies.add(
-                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-generator:1.0.0'))
+                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-generator:1.0.1'))
 
         project.extensions.create(MockExtension.plugin, MockExtension)
         project.android.registerTransform(new MockTransform(project))
