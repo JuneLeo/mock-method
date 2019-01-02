@@ -1,5 +1,3 @@
-import com.android.build.gradle.AppPlugin
-
 buildscript {
     repositories {
         google()
@@ -15,21 +13,22 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.mock.internel:MockPlugin:1.0'
+//        classpath 'com.mock.internel:MockPlugin:1.0'
         classpath 'com.gradle:build-scan-plugin:1.8'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
-    Project project = rootProject.project('app')
-    project.plugins.whenObjectAdded {
-        if (it.class.name.contains('AppPlugin')) {
-            project.apply plugin: 'MockPlugin'
-            project.mock {
-                //加快编译速度
-                packages = [
-                        'com.mock.sample'
-                ]
-            }
-        }
-    }
+//    Project project = rootProject.project('app')
+//    project.plugins.whenObjectAdded {
+//        if (it.class.name.contains('AppPlugin')) {
+//            project.apply plugin: 'MockPlugin'
+//            project.mock {
+//                //加快编译速度
+//                packages = [
+//                        'com.mock.sample'
+//                ]
+//            }
+//        }
+//    }
 }
 
 
@@ -52,19 +51,20 @@ allprojects { project ->
         jcenter()
         mavenCentral()
         mavenLocal()
+        maven { url "https://jitpack.io" }
 
     }
     //三个项目统一引入依赖，依赖必须在configurations设置了之后才可以使用
-    if (annotationProject.contains(project.name)) {
-        project.getConfigurations().whenObjectAdded {
-            if (it.name.equals('implementation')) {
-                it.dependencies.add(project.dependencies.create('com.mock.internel:MockAnnotation:1.0'))
-            }
-        }
-
-    }
+//    if (annotationProject.contains(project.name)) {
+//        project.getConfigurations().whenObjectAdded {
+//            if (it.name.equals('implementation')) {
+//                it.dependencies.add(project.dependencies.create('com.mock.internel:MockAnnotation:1.0'))
+//            }
+//        }
+//
+//    }
 }
 
 
 
-
+apply from:'debug.gradle'

@@ -1,7 +1,8 @@
-apply plugin: 'java-library'
 apply plugin: 'groovy'
-apply plugin: 'java'
-apply from:file('upload.gradle')
+//apply from:file('upload.gradle')
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.JuneLeo'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -10,7 +11,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.2.1'  //build tools
     implementation 'com.android.tools.build:transform-api:1.5.0' //transform
     implementation 'org.javassist:javassist:3.23.0-GA' //javassist
-//    implementation 'com.mock.internel:MockAnnotation:1.0'
+    implementation 'com.github.JuneLeo.mock-method:mock-method-annotation:1.0.0'
 }
 
 sourceCompatibility = "7"

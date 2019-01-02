@@ -1,0 +1,57 @@
+apply plugin: DebugPlugin
+
+class DebugPlugin implements Plugin<Project> {
+    Project mProject;
+    StringBuilder builder = new StringBuilder();
+
+    @Override
+    void apply(Project project) {
+        mProject = project
+
+        project.gradle.taskGraph.afterTask(new Action<Task>() {
+            @Override
+            void execute(Task task) {
+                builder.append("        | inputs file|\n")
+                builder.append("        |-----------------------------------------------------------------\n")
+                if (task.inputs.files.getFiles().size() == 0) {
+                    builder.append("        | 没有inputs路径\n")
+                } else {
+                    task.inputs.files.getFiles().each {
+                        builder.append("        | ${it.path}\n")
+                    }
+                }
+                builder.append("        |-----------------------------------------------------------------\n")
+                builder.append("        | outputs file|\n")
+                builder.append("        |-----------------------------------------------------------------\n")
+                if (task.outputs.files.getFiles().size() == 0) {
+                    builder.append("        | 没有outputs路径\n")
+                } else {
+                    task.outputs.files.getFiles().each {
+                        builder.append("        | ${it.path}\n")
+                    }
+                }
+                builder.append("        |-----------------------------------------------------------------\n")
+            }
+        })
+
+        project.gradle.taskGraph.beforeTask(new Action<Task>() {
+            @Override
+            void execute(Task task) {
+                builder.append(" |------------------------------------------------------------------------\n")
+                builder.append(" | ${task.name} , ${task.project.name}|\n")
+                builder.append(" |------------------------------------------------------------------------\n")
+            }
+        })
+
+        project.gradle.buildFinished(new Action<BuildResult>() {
+            @Override
+            void execute(BuildResult buildResult) {
+                mProject.file(mProject.rootDir.path + '/task.txt').withPrintWriter {
+                    it.write(builder.toString())
+                }
+
+            }
+        })
+
+    }
+}
