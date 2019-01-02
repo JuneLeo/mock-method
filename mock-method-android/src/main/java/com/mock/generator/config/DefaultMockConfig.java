@@ -21,6 +21,8 @@ import java.util.Map;
 public class DefaultMockConfig implements IMockConfig{
     private static SharedPreferences sharedPreferences;
     private final Application application;
+    private static final String NAME = "abtest";
+    private static final String KEY = "key_abtest";
 
     public DefaultMockConfig(Application application){
         this.application = application;
@@ -32,19 +34,19 @@ public class DefaultMockConfig implements IMockConfig{
 
     @Override
     public boolean isEnable() {
-        return BuildConfig.DEBUG;
+        return true;
     }
 
     @Override
     public Map<String, List<MockMethodModel>> getMockMap() {
 
-        sharedPreferences = application.getSharedPreferences("abTest", Context.MODE_PRIVATE);
-        String abtest = sharedPreferences.getString("abtest", "");
+        sharedPreferences = application.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String abtest = sharedPreferences.getString(KEY, "");
         Gson gson = new Gson();
         if (TextUtils.isEmpty(abtest)) {
             Map<String, List<MockMethodModel>> mock = MockMethodTransform.getMock();
             abtest = gson.toJson(mock);
-            sharedPreferences.edit().putString("abtest", abtest).apply();
+            sharedPreferences.edit().putString(KEY, abtest).apply();
         }
 
         Map<String, List<MockMethodModel>> map = gson.fromJson(abtest, new TypeToken<Map<String, List<MockMethodModel>>>() {
@@ -58,7 +60,7 @@ public class DefaultMockConfig implements IMockConfig{
     public void save() {
         Map<String, List<MockMethodModel>> mockMap = MockManager.getMockMap();
         Gson gson = new Gson();
-        sharedPreferences.edit().putString("abtest", gson.toJson(mockMap)).apply();
+        sharedPreferences.edit().putString(KEY, gson.toJson(mockMap)).apply();
     }
 
     @Override
@@ -75,6 +77,6 @@ public class DefaultMockConfig implements IMockConfig{
             }
         }
         Gson gson = new Gson();
-        sharedPreferences.edit().putString("abtest", gson.toJson(mockMap)).apply();
+        sharedPreferences.edit().putString(KEY, gson.toJson(mockMap)).apply();
     }
 }

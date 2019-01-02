@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.mock.generator.MockManager;
 import com.mock.generator.ui.MockSettingActivity;
+import com.mock.sample.BuildConfig;
 import com.mock.sample.R;
 import com.mock.annotation.MockMethod;
 import com.mock.generator.config.DefaultMockConfig;
@@ -18,7 +18,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MockManager.init(new DefaultMockConfig(getApplication()));
+        MockManager.init(new DefaultMockConfig(getApplication()){
+            @Override
+            public boolean isEnable() {
+                return BuildConfig.DEBUG;
+            }
+        });
 
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
