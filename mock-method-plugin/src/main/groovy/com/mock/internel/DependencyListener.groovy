@@ -19,10 +19,10 @@ class DependencyListener implements DependencyResolutionListener{
             }
             mProject.allprojects{
                 mProject.configurations.implementation.dependencies.add(
-                        mProject.dependencies.create('com.github.JuneLeo:mock-method-annotation:1.0.5'))
+                        mProject.dependencies.create('com.github.JuneLeo:mock-method-annotation:1.0.6'))
             }
             mProject.configurations.annotationProcessor.dependencies.add(
-                    mProject.dependencies.create('com.github.JuneLeo:mock-method-compiler:1.0.5'))
+                    mProject.dependencies.create('com.github.JuneLeo:mock-method-compiler:1.0.6'))
         }
         mProject.gradle.removeListener(this)
     }
