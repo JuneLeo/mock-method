@@ -2,19 +2,15 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
-        mavenLocal()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
         maven {
             url uri('local-repos')
         }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
 //        classpath 'com.mock.internel:MockPlugin:1.0'
-        classpath 'com.gradle:build-scan-plugin:1.8'
+        classpath 'com.github.JuneLeo.mock-method-debug:mock-method-plugin:1.0.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 //    Project project = rootProject.project('app')
@@ -32,13 +28,6 @@ buildscript {
 }
 
 
-
-apply plugin: 'com.gradle.build-scan'
-buildScan {
-    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
-    licenseAgree = 'yes'
-}
-
 def annotationProject = ['mock-method-plugin', 'mock-method-compiler', 'app'].collect()
 
 allprojects { project ->
@@ -49,8 +38,6 @@ allprojects { project ->
         }
         google()
         jcenter()
-        mavenCentral()
-        mavenLocal()
         maven { url "https://jitpack.io" }
 
     }
