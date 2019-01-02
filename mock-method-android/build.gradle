@@ -5,7 +5,7 @@ group = 'com.github.JuneLeo'
 android {
     compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

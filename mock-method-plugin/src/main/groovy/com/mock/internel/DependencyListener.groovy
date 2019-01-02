@@ -17,7 +17,7 @@ class DependencyListener implements DependencyResolutionListener{
             mProject.repositories.maven {
                 url "https://jitpack.io"
             }
-            mProject.subprojects{
+            mProject.allprojects{
                 mProject.configurations.implementation.dependencies.add(
                         mProject.dependencies.create('com.github.JuneLeo:mock-method-annotation:1.0.5'))
             }
