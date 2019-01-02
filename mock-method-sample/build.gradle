@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'MockPlugin'
-mock {
-    //加快编译速度
-    packages = [
-            'com.mock.sample'
-    ]
-    dependencyEnable = true
-}
+//apply plugin: 'MockPlugin'
+//mock {
+//    //加快编译速度
+//    packages = [
+//            'com.mock.sample'
+//    ]
+//    dependencyEnable = true
+//}
 android {
     compileSdkVersion 26
     defaultConfig {
