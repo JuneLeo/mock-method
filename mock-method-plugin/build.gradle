@@ -1,8 +1,8 @@
 apply plugin: 'groovy'
-//apply from:file('upload.gradle')
-apply plugin: 'com.github.dcendents.android-maven'
+apply from:file('upload.gradle')
+//apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'com.github.JuneLeo'
+//group = 'com.github.JuneLeo'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

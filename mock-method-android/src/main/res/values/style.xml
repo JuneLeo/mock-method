@@ -1,13 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
     <style name="switch_abtest" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">#43ac43</item>
         <item name="colorSwitchThumbNormal">#f1f1f1</item>
@@ -16,5 +8,4 @@
         <item name="android:switchPadding">10dp</item>
         <item name="android:switchMinWidth">40dp</item>
     </style>
-
 </resources>

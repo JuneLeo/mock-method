@@ -5,6 +5,7 @@ mock {
     packages = [
             'com.mock.sample'
     ]
+    dependencyEnable = true
 }
 android {
     compileSdkVersion 26
@@ -32,10 +33,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation project(':mock-method-android')
 
 //    implementation 'com.github.JuneLeo.mock-method:mock-method-annotation:1.0.1'
 //    implementation 'com.github.JuneLeo.mock-method:mock-method-generator:1.0.1'
-    annotationProcessor 'com.github.JuneLeo:mock-method-compiler:1.0.0'
+//    annotationProcessor 'com.github.JuneLeo:mock-method-compiler:1.0.0'
 
 }
 

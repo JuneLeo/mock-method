@@ -1,4 +1,4 @@
-package com.mock.sample.ui;
+package com.mock.generator.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,9 +15,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mock.generator.MockManager;
 import com.mock.generator.MockMethodModel;
-import com.mock.sample.R;
-import com.mock.sample.abtest.ABTestMock;
+import com.mock.generator.R;
+import com.mock.generator.config.DefaultMockConfig;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MockSettingActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        List<MockMethodModel> mockMethodModels = ABTestMock.getMockItem();
+        List<MockMethodModel> mockMethodModels = DefaultMockConfig.getMockItem();
         ListView listView = findViewById(R.id.list);
         MockAdapter mockAdapter = new MockAdapter(mockMethodModels);
         listView.setAdapter(mockAdapter);
@@ -39,7 +40,7 @@ public class MockSettingActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ABTestMock.saveData();
+        MockManager.getMockConfig().save();
     }
 
     private class MockAdapter extends BaseAdapter {

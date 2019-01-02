@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MockSettingActivity"/>
+        <activity android:name="com.mock.generator.ui.MockSettingActivity"/>
     </application>
 
 </manifest>

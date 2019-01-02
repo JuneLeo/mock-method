@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mock.generator.MockManager;
+import com.mock.generator.ui.MockSettingActivity;
 import com.mock.sample.R;
 import com.mock.annotation.MockMethod;
-import com.mock.sample.abtest.ABTestMock;
+import com.mock.generator.config.DefaultMockConfig;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ABTestMock.init(getApplication());
+        MockManager.init(new DefaultMockConfig(getApplication()));
 
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override

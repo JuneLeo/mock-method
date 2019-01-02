@@ -9,8 +9,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-//        classpath 'com.mock.internel:MockPlugin:1.0'
-        classpath 'com.github.JuneLeo:mock-method-debug:1.0.4'
+        classpath 'com.mock.internel:MockPlugin:1.0'
+//        classpath 'com.github.JuneLeo:mock-method-debug:1.0.5'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 //    Project project = rootProject.project('app')

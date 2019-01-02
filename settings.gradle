@@ -1,10 +1,7 @@
-include ':app', ':mock-method-plugin'
-//compiler 自动生成类
-include ':compiler'
-project(':compiler').projectDir = new File('../mock-method-compiler/mock-method-compiler')
-//注解
-include ':annotation'
-project(':annotation').projectDir = new File('../mock-method/mock-method-annotation')
-//辅助类
-include ':generator'
-project(':generator').projectDir = new File('../mock-method/mock-method-generator')
+include ':mock-method-sample', ':mock-method-plugin', ':mock-method-android'
+////compiler 自动生成类
+//include ':compiler'
+//project(':compiler').projectDir = new File('mock-method-compiler/library')
+////注解
+//include ':annotation'
+//project(':annotation').projectDir = new File('mock-method-annotation/library')
