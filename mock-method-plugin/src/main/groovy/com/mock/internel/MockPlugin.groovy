@@ -22,7 +22,7 @@ class MockPlugin implements Plugin<Project> {
         project.configurations.implementation.dependencies.add(
                 project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-annotation:1.0.1'))
         project.configurations.implementation.dependencies.add(
-                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-generator:1.0.1'))
+                project.dependencies.create('com.github.JuneLeo.mock-method:mock-method-generator:1.0.2'))
         project.configurations.annotationProcessor.dependencies.add(
                 project.dependencies.create('com.github.JuneLeo:mock-method-compiler:1.0.0'))
         project.extensions.create(MockExtension.plugin, MockExtension)
