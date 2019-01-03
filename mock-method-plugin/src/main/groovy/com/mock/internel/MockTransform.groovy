@@ -44,7 +44,7 @@ class MockTransform extends Transform {
 
             //ClassPool中注入注解
             input.jarInputs.each { JarInput jarInput->
-                if (jarInput.file.absolutePath.contains('mock-method-android')){
+                if (jarInput.file.absolutePath.contains('mock-method-annotation')){
                     Inject.addPoolPath(jarInput.file.absolutePath)
                 }
             }

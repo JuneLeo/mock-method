@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @MockMethod(defaultValue = "修改为a", values = "修改为a,修改为b")
+    @MockMethod(defaultValue = "修改为a", values = "修改为a,修改为b,ddddd")
     public String a() {
+
         return "我是a方法的返回值 - 设置后点击我改变值";
     }
 
