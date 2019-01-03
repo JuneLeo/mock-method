@@ -9,8 +9,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-//        classpath 'com.mock.internel:MockPlugin:1.0'
-//        classpath 'com.github.JuneLeo.mock-method:mock-method-plugin:1.1.3'
+//        classpath 'com.mock.internel:MockPlugin:1.0' //依赖本地仓库
+        classpath 'com.github.JuneLeo.mock-method:mock-method-plugin:1.1.4' //依赖jitpack
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }

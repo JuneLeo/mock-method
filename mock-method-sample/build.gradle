@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'MockPlugin'
-//mock {
-//    //加快编译速度
-//    packages = [
-//            'com.mock.sample','com.mock.lib1'
-//    ]
-//    dependencyEnable = true
-//}
+apply plugin: 'MockPlugin'
+mock {
+    //加快编译速度
+    packages = [
+            'com.mock.sample','com.mock.lib1'
+    ]
+    dependencyEnable = true
+}
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -37,7 +37,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.8'
+//    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.8'
+    implementation 'com.github.JuneLeo.mock-method:mock-method-android:1.1.4'
     implementation project(':mock-method-android')
     implementation project(':mock-method-lib-1')
 
