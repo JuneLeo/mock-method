@@ -10,33 +10,35 @@ import org.gradle.api.Project
 class Inject {
     private static ClassPool pool = ClassPool.getDefault()
     private static List<MockMethodModel> generatorMockMap = new ArrayList<>();
+
     static void addPoolPath(String path) {
         pool.appendClassPath(path)
     }
 
-
-    static void generatorMockMap(String path, Project project){
+    static void generatorMockMap(String path, Project project) {
         File jarFile = new File(path)
         String jarZipDir = JarUtils.getExtractJarPath(jarFile)
         File unJar = new File(jarZipDir)
         List<String> strings = JarUtils.unJar(jarFile, unJar)
         addPoolPath(unJar.path)
         //todo inject代码
-        if (strings.contains('com.mock.generator.MockMethodGenerator.class')){
+        if (strings.contains('com.mock.generator.MockMethodGenerator.class')) {
             CtClass ctClass = pool.getCtClass('com.mock.generator.MockMethodGenerator')
             try {
-            CtMethod ctMethod = ctClass.getDeclaredMethod('initMackMock')
+                CtMethod ctMethod = ctClass.getDeclaredMethod('initMackMock')
 
-            StringBuilder builder = new StringBuilder()
-            generatorMockMap.each {
-                builder.append(getMockMapDes(it.className,it.methodName,it.values,it.defaultValue)+"\n")
-            }
-            println '方法' + builder.toString()
-            ctMethod.insertBefore(builder.toString())
-            ctClass.writeFile(unJar.path)
-            ctClass.detach()
-            }catch (Exception e){
+                StringBuilder builder = new StringBuilder()
+                generatorMockMap.each {
+                    builder.append(getMockMapDes(it.className, it.methodName, it.values, it.defaultValue) + "\n")
+                }
+                println '方法' + builder.toString()
+                ctMethod.insertBefore(builder.toString())
+                ctClass.writeFile(unJar.path)
+                ctClass.detach()
+            } catch (Exception e) {
                 e.printStackTrace()
+            } finally {
+                generatorMockMap.clear()
             }
         }
         println '解压路径:' + new File(jarZipDir).path
@@ -45,12 +47,13 @@ class Inject {
         JarUtils.jar(jarFile, unJar)
     }
 
-    private static String getMockMapDes(String className, String methodName, String values,String defaultValue) {
+    private
+    static String getMockMapDes(String className, String methodName, String values, String defaultValue) {
         return String.format("mockMethodModels.add(getMockMap(\"%s\",\"%s\",\"%s\",\"%s\"));", className, methodName, values, defaultValue)
     }
 
-    static void  injectMockMap(String className,String methodName,String values,String defaultValue){
-        MockMethodModel mockMethodModel= new MockMethodModel()
+    static void injectMockMap(String className, String methodName, String values, String defaultValue) {
+        MockMethodModel mockMethodModel = new MockMethodModel()
         mockMethodModel.values = values
         mockMethodModel.defaultValue = defaultValue
         mockMethodModel.methodName = methodName
@@ -98,10 +101,10 @@ class Inject {
                     project.extensions[MockExtension.plugin].packages.each { String pkg ->
                         if (className.contains(pkg)) {
                             className = className.substring(0, className.length() - 6)
-                            println 'className:'+className
+                            println 'className:' + className
                             try {
                                 injectClass(path, className)
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace()
                             }
                         }
@@ -133,7 +136,7 @@ class Inject {
             if (!isAllow(method.returnType.name)) {
                 return
             }
-            injectMockMap(className,method.name,mockMethod.values(),mockMethod.defaultValue())
+            injectMockMap(className, method.name, mockMethod.values(), mockMethod.defaultValue())
             println("methodDes:" + getMethodDes(className, method.name, method.returnType.name))
 
             method.insertBefore(getMethodDes(className, method.name, method.returnType.name))
@@ -206,9 +209,6 @@ class Inject {
             return 'Short.valueOf(value)'
         }
     }
-
-
-
 
 
 }

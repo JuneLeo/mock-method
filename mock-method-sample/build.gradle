@@ -38,8 +38,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 //    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.8'
-    implementation 'com.github.JuneLeo.mock-method:mock-method-android:1.1.4'
-    implementation project(':mock-method-android')
+    implementation 'com.github.JuneLeo.mock-method:mock-method-android:1.1.5'
+//    implementation project(':mock-method-android')
     implementation project(':mock-method-lib-1')
 
 //    annotationProcessor project(':compiler')
