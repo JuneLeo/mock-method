@@ -6,4 +6,6 @@ class MockExtension {
     def packages
     boolean dependencyEnable = true
 
+    List<String> subprojects
+
 }

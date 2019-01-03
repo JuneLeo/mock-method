@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.mock.generator.MockManager;
 import com.mock.generator.MockMethodModel;
 import com.mock.generator.R;

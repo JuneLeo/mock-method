@@ -6,49 +6,117 @@ import javassist.CtClass
 import javassist.CtMethod
 import org.gradle.api.Project
 
-import java.lang.reflect.Modifier
 
 class Inject {
     private static ClassPool pool = ClassPool.getDefault()
-
-
-    static void injectJarPath(String path) {
-        //注入依赖与generator中的类，所以注入jar path
-        println("--------jar-path----:" + path)
+    private static List<MockMethodModel> generatorMockMap = new ArrayList<>();
+    static void addPoolPath(String path) {
         pool.appendClassPath(path)
     }
 
-    //class期，不可以使用
+
+    static void generatorMockMap(String path, Project project){
+        File jarFile = new File(path)
+        String jarZipDir = JarUtils.getExtractJarPath(jarFile)
+        File unJar = new File(jarZipDir)
+        List<String> strings = JarUtils.unJar(jarFile, unJar)
+        addPoolPath(unJar.path)
+        //todo inject代码
+        if (strings.contains('com.mock.generator.MockMethodGenerator.class')){
+            CtClass ctClass = pool.getCtClass('com.mock.generator.MockMethodGenerator')
+            try {
+            CtMethod ctMethod = ctClass.getDeclaredMethod('initMackMock')
+
+            StringBuilder builder = new StringBuilder()
+            generatorMockMap.each {
+                builder.append(getMockMapDes(it.className,it.methodName,it.values,it.defaultValue)+"\n")
+            }
+            println '方法' + builder.toString()
+            ctMethod.insertBefore(builder.toString())
+            ctClass.writeFile(unJar.path)
+            ctClass.detach()
+            }catch (Exception e){
+                e.printStackTrace()
+            }
+        }
+        println '解压路径:' + new File(jarZipDir).path
+        println '压缩路径:' + new File(path).path
+        jarFile.delete()
+        JarUtils.jar(jarFile, unJar)
+    }
+
+    private static String getMockMapDes(String className, String methodName, String values,String defaultValue) {
+        return String.format("mockMethodModels.add(getMockMap(\"%s\",\"%s\",\"%s\",\"%s\"));", className, methodName, values, defaultValue)
+    }
+
+    static void  injectMockMap(String className,String methodName,String values,String defaultValue){
+        MockMethodModel mockMethodModel= new MockMethodModel()
+        mockMethodModel.values = values
+        mockMethodModel.defaultValue = defaultValue
+        mockMethodModel.methodName = methodName
+        mockMethodModel.className = className
+        generatorMockMap.add(mockMethodModel)
+    }
+
+
+    static void injectJarPath(String path, Project project) {
+        //注入依赖与generator中的类，所以注入jar path
+        project.extensions[MockExtension.plugin].subprojects.each {
+            if (path.contains(it)) {
+                File jarFile = new File(path)
+                String jarZipDir = JarUtils.getExtractJarPath(jarFile)
+                File unJar = new File(jarZipDir)
+                List<String> strings = JarUtils.unJar(jarFile, unJar)
+                injectDir(unJar.path, project)
+                println '解压路径:' + new File(jarZipDir).path
+                println '压缩路径:' + new File(path).path
+                jarFile.delete()
+                JarUtils.jar(jarFile, unJar)
+            }
+        }
+
+    }
+
+
     static void injectDir(String path, Project project) {
         println("--------path----:" + path)
-        ///Users/bighero/demo/Mock/mock-method-generator/build/classes
-//        println '--------MockManagerPath----:'+project.rootProject.rootDir.absolutePath +'/mock-method-generator/build/classes/java/main'
-//        pool.appendClassPath(project.rootProject.rootDir.absolutePath +'/mock-method-generator/build/classes/java/main')
-        pool.appendClassPath(path)
-//        fakeMockManager(path)
+        addPoolPath(path)
+        processorDir(path, project)
+    }
+
+    private static void processorDir(String path, Project project) {
         File dir = new File(path)
         if (dir.isDirectory()) {
             dir.eachFileRecurse { File file ->
-                String filePath = file.absolutePath
-                if (filePath.endsWith(".class")) {
-                    String className = filePath.replace('\\', '.').replace('/', '.')
-                    if (!className.contains('R$')) {
-                        MockExtension printExtension = project.extensions.mock
-                        printExtension.packages.each { String pkg ->
-                            if (className.contains(pkg)) {
-                                //
-                                int start = className.indexOf(pkg)
-                                String clzName = className.substring(start, className.length() - 6)
-//                                println 'clzName:' + clzName
-                                injectClass(path, clzName)
+                String classPath = getClassPath(file, path)
+                String className = classPath.replace('\\', '.').replace('/', '.')
+                if (className.endsWith(".class")
+                        && !className.contains('R$')
+                        && !className.contains('R.class')
+                        && !className.contains("BuildConfig.class")) {
+
+                    project.extensions[MockExtension.plugin].packages.each { String pkg ->
+                        if (className.contains(pkg)) {
+                            className = className.substring(0, className.length() - 6)
+                            println 'className:'+className
+                            try {
+                                injectClass(path, className)
+                            }catch(Exception e){
+                                e.printStackTrace()
                             }
                         }
                     }
                 }
-
             }
         }
     }
+
+    private static String getClassPath(File file, String path) {
+        String filePath = file.absolutePath
+        return filePath.substring(path.length() + 1, filePath.length())
+
+    }
+
 
     private static void injectClass(String path, String className) {
         CtClass ctClass = pool.get(className)
@@ -65,6 +133,7 @@ class Inject {
             if (!isAllow(method.returnType.name)) {
                 return
             }
+            injectMockMap(className,method.name,mockMethod.values(),mockMethod.defaultValue())
             println("methodDes:" + getMethodDes(className, method.name, method.returnType.name))
 
             method.insertBefore(getMethodDes(className, method.name, method.returnType.name))
@@ -137,29 +206,9 @@ class Inject {
             return 'Short.valueOf(value)'
         }
     }
-/**
- * 伪造一个类，骗过编译器
- * @param path
- */
-    private static void fakeMockManager(String path) {
-        CtClass ctClass = pool.makeClass('com.mock.generator.MockManager')
-        CtClass stringCtClass = pool.getCtClass("java.lang.String")
-        CtMethod ctMethod = new CtMethod(CtClass.booleanType, 'isMock', new CtClass[2] {
-            stringCtClass; stringCtClass
-        }, ctClass)
-        ctMethod.setModifiers(Modifier.PUBLIC | Modifier.STATIC)
-        ctMethod.setBody("return false")
-        ctClass.addMethod(ctMethod)
 
-        CtMethod ctMethod2 = new CtMethod(stringCtClass, 'getValue', new CtClass[2] {
-            stringCtClass; stringCtClass
-        }, ctClass)
-        ctMethod2.setModifiers(Modifier.PUBLIC | Modifier.STATIC)
-        ctMethod2.setBody("return false")
-        ctClass.addMethod(ctMethod2)
-        ctClass.writeFile(path)
-        ctClass.detach()
-    }
 
-//
+
+
+
 }

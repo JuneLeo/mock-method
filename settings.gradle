@@ -1,4 +1,8 @@
 include ':mock-method-sample', ':mock-method-plugin', ':mock-method-android'
+include':mock-method-lib-1'
+project(':mock-method-lib-1').projectDir = new File('mock-lib/mock-method-lib-1')
+
+
 //compiler 自动生成类
 include ':compiler'
 project(':compiler').projectDir = new File('mock-method-compiler/library')

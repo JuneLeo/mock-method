@@ -7,10 +7,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compile gradleApi()
     compile localGroovy()
-    implementation 'com.android.tools.build:gradle:3.0.0'  //build tools
+    implementation 'com.android.tools.build:gradle:3.2.1'  //build tools
     implementation 'com.android.tools.build:transform-api:1.5.0' //transform
     implementation 'org.javassist:javassist:3.23.0-GA' //javassist
-    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.7'
+    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.8'
 }
 
 sourceCompatibility = "7"

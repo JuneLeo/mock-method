@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 //mock {
 //    //加快编译速度
 //    packages = [
-//            'com.mock.sample'
+//            'com.mock.sample','com.mock.lib1'
 //    ]
 //    dependencyEnable = true
 //}
@@ -36,8 +36,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.github.JuneLeo.mock-method-debug:mock-method-android:1.0.9'
-//    implementation project(':mock-method-android')
+
+    implementation 'com.github.JuneLeo:mock-method-annotation:1.0.8'
+    implementation project(':mock-method-android')
+    implementation project(':mock-method-lib-1')
+
+//    annotationProcessor project(':compiler')
 
 
 }

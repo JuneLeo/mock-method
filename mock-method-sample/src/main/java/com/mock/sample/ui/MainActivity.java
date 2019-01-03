@@ -5,12 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import com.mock.generator.MockManager;
+import com.mock.generator.config.DefaultMockConfig;
 import com.mock.generator.ui.MockSettingActivity;
 import com.mock.sample.BuildConfig;
 import com.mock.sample.R;
 import com.mock.annotation.MockMethod;
-import com.mock.generator.config.DefaultMockConfig;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -28,38 +28,75 @@ class MockTransform extends Transform {
     Set<? super QualifiedContent.Scope> getScopes() {
         return TransformManager.SCOPE_FULL_PROJECT
     }
+
     @Override
     boolean isIncremental() {
-        return true
+        return false
     }
 
     @Override
     void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
         super.transform(context, inputs, referencedInputs, outputProvider, isIncremental)
+        JarInput injectJarInput
+
         inputs.each { TransformInput input ->
 
-            //必须现把jar中的路径注入到pool中，所以先遍历jarInputs
+
+            //ClassPool中注入注解
+            input.jarInputs.each { JarInput jarInput->
+                if (jarInput.file.absolutePath.contains('mock-method-android')){
+                    Inject.addPoolPath(jarInput.file.absolutePath)
+                }
+            }
             //jar
             input.jarInputs.each { JarInput jarInput ->
-                Inject.injectJarPath(jarInput.file.getAbsolutePath())
-                def jarName = jarInput.name
-                def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
-                if (jarName.endsWith(".jar")) {
-                    jarName = jarName.substring(0, jarName.length() - 4)
+                //辅助类
+                if (jarInput.file.absolutePath.contains('mock-method-android')) {
+                    Inject.addPoolPath(jarInput.file.getAbsolutePath())
+                    injectJarInput = jarInput
+                } else {
+                    //jar
+                    Inject.injectJarPath(jarInput.file.getAbsolutePath(), project)
+
+                    def jarName = jarInput.name
+                    def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
+                    if (jarName.endsWith(".jar")) {
+                        jarName = jarName.substring(0, jarName.length() - 4)
+                    }
+                    def dest = outputProvider.getContentLocation(jarName + md5Name,
+                            jarInput.contentTypes, jarInput.scopes, Format.JAR)
+                    FileUtils.copyFile(jarInput.file, dest)
                 }
-                def dest = outputProvider.getContentLocation(jarName + md5Name,
-                        jarInput.contentTypes, jarInput.scopes, Format.JAR)
-                FileUtils.copyFile(jarInput.file, dest)
             }
 
             //文件
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                Inject.injectDir(directoryInput.file.absolutePath,project)
+                println '输出路径:' + directoryInput.file.absolutePath
+                Inject.injectDir(directoryInput.file.absolutePath, project)
                 def dest = outputProvider.getContentLocation(directoryInput.name,
                         directoryInput.contentTypes, directoryInput.scopes,
                         Format.DIRECTORY)
                 FileUtils.copyDirectory(directoryInput.file, dest)
             }
         }
+
+        //辅助类
+        if (injectJarInput != null) {
+            println '辅助类'
+            println injectJarInput.file.absolutePath
+
+
+            Inject.generatorMockMap(injectJarInput.file.getAbsolutePath(), project)
+            def jarName = injectJarInput.name
+            def md5Name = DigestUtils.md5Hex(injectJarInput.file.getAbsolutePath())
+            if (jarName.endsWith(".jar")) {
+                jarName = jarName.substring(0, jarName.length() - 4)
+            }
+            def dest = outputProvider.getContentLocation(jarName + md5Name,
+                    injectJarInput.contentTypes, injectJarInput.scopes, Format.JAR)
+            FileUtils.copyFile(injectJarInput.file, dest)
+
+        }
+
     }
 }

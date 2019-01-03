@@ -13,7 +13,7 @@ public class MockMethodTransform {
 
     static {
         try {
-            Class<?> aClass = Class.forName("com.mock.generator.MockMethodMap");
+            Class<?> aClass = Class.forName("com.mock.generator.MockMethodGenerator");
             IMockMethodMap iMockMethodMap = (IMockMethodMap) aClass.newInstance();
             iMockMethodMap.initMackMock(classMock);
         } catch (Exception e) {

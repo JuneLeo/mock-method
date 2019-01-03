@@ -8,27 +8,12 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
 //        classpath 'com.mock.internel:MockPlugin:1.0'
-//        classpath 'com.github.JuneLeo.mock-method-debug:mock-method-plugin:1.0.9'
+//        classpath 'com.github.JuneLeo.mock-method:mock-method-plugin:1.1.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
-//    Project project = rootProject.project('app')
-//    project.plugins.whenObjectAdded {
-//        if (it.class.name.contains('AppPlugin')) {
-//            project.apply plugin: 'MockPlugin'
-//            project.mock {
-//                //加快编译速度
-//                packages = [
-//                        'com.mock.sample'
-//                ]
-//            }
-//        }
-//    }
 }
-
-
-def annotationProject = ['mock-method-plugin', 'mock-method-compiler', 'app'].collect()
 
 allprojects { project ->
     project.repositories {
@@ -41,15 +26,6 @@ allprojects { project ->
         maven { url "https://jitpack.io" }
 
     }
-    //三个项目统一引入依赖，依赖必须在configurations设置了之后才可以使用
-//    if (annotationProject.contains(project.name)) {
-//        project.getConfigurations().whenObjectAdded {
-//            if (it.name.equals('implementation')) {
-//                it.dependencies.add(project.dependencies.create('com.mock.internel:MockAnnotation:1.0'))
-//            }
-//        }
-//
-//    }
 }
 
 

@@ -21,6 +21,23 @@ class MockPlugin implements Plugin<Project> {
         //拓展
         project.extensions.create(MockExtension.plugin, MockExtension)
 
+        project.afterEvaluate {
+            List<String> strings = new ArrayList<>()
+            project.rootProject.subprojects{
+                strings.add(it.project.name)
+            }
+            if (strings.contains('annotation')){
+                strings.remove('annotation')
+            }
+            if (strings.contains('compiler')){
+                strings.remove('compiler')
+            }
+            println '子项目数量：'+strings
+            project.extensions[MockExtension.plugin].subprojects = strings
+        }
+
+
+
         if (!project.extensions[MockExtension.plugin].isEnable){
             return
         }
