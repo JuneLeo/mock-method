@@ -1,6 +1,8 @@
 [submodule "mock-method-compiler"]
 	path = mock-method-compiler
 	url = git@github.com:JuneLeo/mock-method-compiler.git
+	branch = master
 [submodule "mock-method-annotation"]
 	path = mock-method-annotation
 	url = git@github.com:JuneLeo/mock-method-annotation.git
+	branch = master
